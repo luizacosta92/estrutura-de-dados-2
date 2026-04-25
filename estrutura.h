@@ -19,10 +19,10 @@ typedef struct Estrutura {
     Lista *por_renda[TAM_HASH_RENDA];
 } Estrutura;
 
-Estrutura* criar_estrutura();
-void inserir_cliente(Estrutura *estrutura, Cliente *cliente);
-void destruir_estrutura(Estrutura *estrutura);
+Estrutura* cria_estrutura();
+void insere_cliente(Estrutura *estrutura, int criterio, Cliente *cliente);
+void libera_estrutura(Estrutura *estrutura);
 
-Lista* recuperar_cliente(Estrutura *estrutura, int criterio, int complemento, char *busca);
+Lista* recupera_cliente(Estrutura *estrutura, int criterio, int complemento, char *busca);
 
 #endif

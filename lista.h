@@ -12,5 +12,7 @@ Lista* criar_lista();
 void insere_lista(Lista *lista, void *dado);
 void destroi_lista(Lista *lista);
 
+int get_quantidade(Lista *lista);
+Nodo* get_inicio(Lista *lista);
 
 #endif

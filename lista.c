@@ -36,3 +36,13 @@ void destroi_lista(Lista *lista) {
 
     free(lista);
 }
+
+int get_quantidade(Lista *lista) {
+    if (lista == NULL) return 0;
+    return lista->tamanho;
+}
+
+Nodo* get_inicio(Lista *lista) {
+    if (lista == NULL) return NULL;
+    return lista->inicio;
+}

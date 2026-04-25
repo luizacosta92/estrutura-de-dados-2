@@ -2,7 +2,7 @@
 #include <string.h>
 #include "cliente.h"
 
-Cliente* criar_cliente(char *nome, char *bairro, int num_pessoas, int tem_criancas, double renda) {
+Cliente* cria_cliente(char *nome, char *bairro, int num_pessoas, int tem_criancas, double renda) {
     Cliente *cliente = (Cliente*) malloc(sizeof(Cliente));
     if (cliente == NULL) return NULL;
 
@@ -17,6 +17,31 @@ Cliente* criar_cliente(char *nome, char *bairro, int num_pessoas, int tem_crianc
     cliente->renda = renda;
 
     return cliente;
+}
+
+char* get_nome(Cliente *cliente) {
+    if (cliente == NULL) return NULL;
+    return cliente->nome;
+}
+
+char* get_bairro(Cliente *cliente) {
+    if (cliente == NULL) return NULL;
+    return cliente->bairro;
+}
+
+int get_pessoas(Cliente *cliente) {
+    if (cliente == NULL) return -1;
+    return cliente->num_pessoas;
+}
+
+int get_criancas(Cliente *cliente) {
+    if (cliente == NULL) return -1;
+    return cliente->tem_criancas;
+}
+
+double get_renda(Cliente *cliente) {
+    if (cliente == NULL) return -1;
+    return cliente->renda;
 }
 
 void destroi_cliente(Cliente *cliente) {

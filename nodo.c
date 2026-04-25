@@ -2,17 +2,29 @@
 #include "nodo.h"
 
 Nodo* criar_nodo(void *dado) {
-    Nodo *novo = (Nodo *)malloc(sizeof(Nodo));
-    if (novo == NULL) 
+    Nodo *nodo = (Nodo *)malloc(sizeof(Nodo));
+    if (nodo == NULL) 
         return NULL; 
 
-    novo->dado = dado;
-    novo->proximo = NULL;
-    return novo;
+    nodo->dado = dado;
+    nodo->proximo = NULL;
+    return nodo;
 }
 
 void destroi_nodo(Nodo *nodo) {
     if (nodo == NULL) 
         return;
     free(nodo);
+}
+
+void* get_data(Nodo *nodo) {
+    if (nodo == NULL) 
+        return NULL;
+    return nodo->dado;
+}
+
+Nodo* get_next(Nodo *nodo) {
+    if (nodo == NULL) 
+        return NULL;
+    return nodo->proximo;
 }

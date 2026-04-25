@@ -9,4 +9,7 @@ typedef struct Nodo {
 Nodo* criar_nodo(void *dado);
 void destroi_nodo(Nodo *nodo);
 
+void* get_data(Nodo *nodo);
+Nodo* get_next(Nodo *nodo);
+
 #endif 

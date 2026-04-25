@@ -9,12 +9,12 @@ static unsigned int hash_string(const char *str, unsigned int tamanho) {
     int caractere;
 
     while ((caractere = *str++))
-        hash = ((hash << 5) + hash) + caractere; /* hash * 33 + c */
+        hash = ((hash << 5) + hash) + caractere; 
 
     return hash % tamanho;
 }
 
-Estrutura* criar_estrutura(){
+Estrutura* cria_estrutura(){
     Estrutura *estrutura = (Estrutura*) malloc(sizeof(Estrutura));
     if (estrutura == NULL) return NULL;
 
@@ -37,24 +37,49 @@ Estrutura* criar_estrutura(){
     return estrutura;
 }
 
-void inserir_cliente(Estrutura *estrutura, Cliente *cliente){
+void insere_cliente(Estrutura *estrutura, int criterio, Cliente *cliente){
     if (estrutura == NULL || cliente == NULL) return;   
 
-    unsigned int indice_nome = hash_string(cliente->nome, TAM_HASH_NOME);
+    unsigned int indice;
+
+    switch (criterio){    
+    case 1:
+        indice = hash_string(cliente->nome, TAM_HASH_NOME);
+        insere_lista(estrutura->por_nome[indice], cliente);
+        break;
+    case 2:
+        indice = hash_string(cliente->bairro, TAM_HASH_BAIRRO);
+        insere_lista(estrutura->por_bairro[indice], cliente);
+        break;
+    case 3:
+        indice = faixa_pessoas(cliente->num_pessoas);
+        insere_lista(estrutura->por_pessoas[indice], cliente);
+        break;
+    case 4:
+        indice = get_criancas(cliente);
+        insere_lista(estrutura->por_criancas[indice], cliente);
+        break;
+    case 5:
+        indice = faixa_renda(get_renda(cliente));
+        insere_lista(estrutura->por_renda[indice], cliente);
+        break;
+    }
+
+
+   /* unsigned int indice_nome = hash_string(cliente->nome, TAM_HASH_NOME);
     unsigned int indice_bairro = hash_string(cliente->bairro, TAM_HASH_BAIRRO);
     int indice_pessoas = faixa_pessoas(cliente->num_pessoas);
     int indice_criancas = cliente->tem_criancas;
     int indice_renda = faixa_renda(cliente->renda);
 
-    inserir_lista(estrutura->por_nome[indice_nome], cliente);
-    inserir_lista(estrutura->por_bairro[indice_bairro], cliente);
-    inserir_lista(estrutura->por_pessoas[indice_pessoas], cliente);
-    inserir_lista(estrutura->por_criancas[indice_criancas], cliente);
-    inserir_lista(estrutura->por_renda[indice_renda], cliente);
-
+    insere_lista(estrutura->por_nome[indice_nome], cliente);
+    insere_lista(estrutura->por_bairro[indice_bairro], cliente);
+    insere_lista(estrutura->por_pessoas[indice_pessoas], cliente);
+    insere_lista(estrutura->por_criancas[indice_criancas], cliente);
+    insere_lista(estrutura->por_renda[indice_renda], cliente);*/
 }
 
-Lista* recuperar_cliente(Estrutura *estrutura, int criterio, int complemento, char *busca) {
+Lista* recupera_cliente(Estrutura *estrutura, int criterio, int complemento, char *busca) {
     if (estrutura == NULL) return NULL;
 
     unsigned int indice;
@@ -79,24 +104,37 @@ Lista* recuperar_cliente(Estrutura *estrutura, int criterio, int complemento, ch
     }
 }
 
-void destruir_estrutura(Estrutura *estrutura){
+void libera_estrutura(Estrutura *estrutura){
     if (estrutura == NULL) return;
-
+    
     int indice;
+    Nodo *nodo_atual;
+
     for (indice = 0; indice < TAM_HASH_NOME; indice++) {
-        destruir_lista(estrutura->por_nome[indice]);
+        nodo_atual = get_inicio(estrutura->por_nome[indice]);
+        while (nodo_atual != NULL) {
+            Nodo *proximo = get_next(nodo_atual);
+            destroi_cliente((Cliente*) get_data(nodo_atual));
+            destroi_nodo(nodo_atual);
+            nodo_atual = proximo;
+        }
+        free(estrutura->por_nome[indice]);
+    }
+
+    for (indice = 0; indice < TAM_HASH_NOME; indice++) {
+        destroi_lista(estrutura->por_nome[indice]);
     }
     for (indice = 0; indice < TAM_HASH_BAIRRO; indice++) {
-        destruir_lista(estrutura->por_bairro[indice]);
+        destroi_lista(estrutura->por_bairro[indice]);
     }
     for (indice = 0; indice < TAM_HASH_PESSOAS; indice++) {
-        destruir_lista(estrutura->por_pessoas[indice]);
+        destroi_lista(estrutura->por_pessoas[indice]);
     }
     for (indice = 0; indice < TAM_HASH_CRIANCAS; indice++) {
-        destruir_lista(estrutura->por_criancas[indice]);
+        destroi_lista(estrutura->por_criancas[indice]);
     }
     for (indice = 0; indice < TAM_HASH_RENDA; indice++) {
-        destruir_lista(estrutura->por_renda[indice]);
+        destroi_lista(estrutura->por_renda[indice]);
     }
     free(estrutura);
 }
